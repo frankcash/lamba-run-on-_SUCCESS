@@ -30,7 +30,7 @@ resource "aws_iam_role_policy_attachment" "basic-exec-role" {
 }
 
 
-// Analytics policy to submit aws batch jobs
+// Analytics policy to check S3
 data "aws_iam_policy_document" "lambda_exec-policy_document" {
   statement {
     actions = [
