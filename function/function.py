@@ -1,8 +1,6 @@
 import boto3
 import datetime
 
-exporters = {}
-
 def handler(event, context):
     s3 = boto3.client('s3')
     keys = []
