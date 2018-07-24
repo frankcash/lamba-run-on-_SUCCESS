@@ -2,8 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-
-
 resource "aws_iam_role" "lambda_exec_role" {
   name = "lambda_trigger_exec_role"
 
@@ -29,16 +27,15 @@ resource "aws_iam_role_policy_attachment" "basic-exec-role" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-
 // Analytics policy to submit aws batch jobs
 data "aws_iam_policy_document" "lambda_exec-policy_document" {
   statement {
     actions = [
-      "s3:*"
+      "s3:*",
     ]
 
     resources = [
-      "*"
+      "*",
     ]
   }
 }
@@ -50,13 +47,10 @@ resource "aws_iam_policy" "lambda_exec-policy" {
   policy      = "${data.aws_iam_policy_document.lambda_exec-policy_document.json}"
 }
 
-
 resource "aws_iam_role_policy_attachment" "lambda_exec-policy" {
   role       = "${aws_iam_role.lambda_exec_role.name}"
   policy_arn = "${aws_iam_policy.lambda_exec-policy.arn}"
 }
-
-
 
 variable "bucket_name" {
   type        = "string"
