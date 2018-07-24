@@ -1,15 +1,13 @@
 import boto3
 import datetime
+import os
 
-<<<<<<< HEAD
-exporters = {}
-
-=======
->>>>>>> develop
 def handler(event, context):
+    bucket = os.environ['AWS_BUCKET']
+
     s3 = boto3.client('s3')
     keys = []
-    objs = s3.list_objects(Bucket='lambda-run-on-success', Prefix="status/")
+    objs = s3.list_objects(Bucket=bucket, Prefix="status/")
     for obj in objs["Contents"]:
         key = obj["Key"]
         

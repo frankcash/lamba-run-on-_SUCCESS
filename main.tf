@@ -58,6 +58,12 @@ resource "aws_iam_role_policy_attachment" "lambda_exec-policy" {
 
 
 
+variable "bucket_name" {
+  type        = "string"
+  description = "S3 Bucket Name"
+  default     = "lambda-run-on-success"
+}
+
 // Define Lambda
 resource "aws_lambda_function" "success_lambda" {
   function_name    = "success_lambda"
@@ -66,11 +72,17 @@ resource "aws_lambda_function" "success_lambda" {
   filename         = "./function/function.zip"
   source_code_hash = "${base64sha256(file("./function/function.zip"))}"
   role             = "${aws_iam_role.lambda_exec_role.arn}"
+
+  environment {
+    variables = {
+      AWS_BUCKET = "${var.bucket_name}"
+    }
+  }
 }
 
 // Define bucket
 resource "aws_s3_bucket" "bucket" {
-  bucket = "lambda-run-on-success"
+  bucket = "${var.bucket_name}"
 }
 
 resource "aws_lambda_permission" "allow_bucket" {
